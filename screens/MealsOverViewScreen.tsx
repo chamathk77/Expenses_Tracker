@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useLayoutEffect } from 'react'
+import React, { Component, useEffect } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 import { MEALS, CATEGORIES } from '../data/dummy-data'
@@ -10,7 +10,7 @@ function MealsOverViewScreen({ route, navigation }) {
         return meal.categoryIds.indexOf(CatId) >= 0
     })
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const categoryTitle=CATEGORIES.find((category)=>{return category.id===CatId}).title
 
 

@@ -1,12 +1,18 @@
 import React, { Component } from 'react'
 import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+function MealItem({ id, title, imageUrl, duration, complexity, affordability }) {
 
-function MealItem({ title, imageUrl, duration, complexity, affordability }) {
+    function selectMealItemHandler() {
+
+    }
+
+    
 
     return (
         <View style={styles.MealItem}>
-            <Pressable android_ripple={{ color: '#ccc' }}  
-            style={({ pressed }) => [ pressed && styles.buttonPressed]}>
+            <Pressable android_ripple={{ color: '#ccc' }}
+                style={({ pressed }) => [pressed && styles.buttonPressed]}>
                 <View style={styles.innerContainer}>
 
                     <View>
@@ -73,6 +79,6 @@ const styles = StyleSheet.create({
     },
     buttonPressed: {
         opacity: 0.5
-      }
-    
+    }
+
 })
