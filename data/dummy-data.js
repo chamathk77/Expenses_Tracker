@@ -1,6 +1,18 @@
 import Category from '../models/category';
 import Meal from '../models/meal';
+import toast from '../assets/images/toast.jpg'
+import asparegus from '../assets/images/asparagus.jpg'
+import burger from '../assets/images/burger.jpg'
+import indian from '../assets/images/indian-food.jpg'
+import pancake from '../assets/images/pancake.jpg'
+import pastry from '../assets/images/pastry.jpg'
+import schnitzel from '../assets/images/schnitzel.jpg'
+import smoked from '../assets/images/smoked.jpg'
+import souffle from '../assets/images/souffle.jpg'
+import spaghetti from '../assets/images/spaghetti.jpg'
 
+
+ 
 export const CATEGORIES = [
   new Category('c1', 'Italian', '#f5428d'),
   new Category('c2', 'Quick & Easy', '#f54242'),
@@ -21,7 +33,7 @@ export const MEALS = [
     'Spaghetti with Tomato Sauce',
     'affordable',
     'simple',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg/800px-Spaghetti_Bolognese_mit_Parmesan_oder_Grana_Padano.jpg',
+    spaghetti,
     20,
     [
       '4 Tomatoes',
@@ -52,7 +64,7 @@ export const MEALS = [
     'Toast Hawaii',
     'affordable',
     'simple',
-    'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
+    toast,
     10,
     [
       '1 Slice White Bread',
@@ -78,7 +90,7 @@ export const MEALS = [
     'Classic Hamburger',
     'pricey',
     'simple',
-    'https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg',
+    burger,
     45,
     [
       '300g Cattle Hack',
@@ -107,7 +119,7 @@ export const MEALS = [
     'Wiener Schnitzel',
     'luxurious',
     'challenging',
-    'https://cdn.pixabay.com/photo/2018/03/31/19/29/schnitzel-3279045_1280.jpg',
+    schnitzel,
     60,
     [
       '8 Veal Cutlets',
@@ -140,7 +152,7 @@ export const MEALS = [
     'Salad with Smoked Salmon',
     'luxurious',
     'simple',
-    'https://cdn.pixabay.com/photo/2016/10/25/13/29/smoked-salmon-salad-1768890_1280.jpg',
+    smoked,
     15,
     [
       'Arugula',
@@ -172,7 +184,7 @@ export const MEALS = [
     'Delicious Orange Mousse',
     'affordable',
     'hard',
-    'https://cdn.pixabay.com/photo/2017/05/01/05/18/pastry-2274750_1280.jpg',
+    pastry,
     240,
     [
       '4 Sheets of Gelatine',
@@ -205,7 +217,7 @@ export const MEALS = [
     'Pancakes',
     'affordable',
     'simple',
-    'https://cdn.pixabay.com/photo/2018/07/10/21/23/pancake-3529653_1280.jpg',
+    pancake,
     20,
     [
       '1 1/2 Cups all-purpose Flour',
@@ -234,7 +246,7 @@ export const MEALS = [
     'Creamy Indian Chicken Curry',
     'pricey',
     'challenging',
-    'https://cdn.pixabay.com/photo/2018/06/18/16/05/indian-food-3482749_1280.jpg',
+    indian,
     35,
     [
       '4 Chicken Breasts',
@@ -265,7 +277,7 @@ export const MEALS = [
     'Chocolate Souffle',
     'affordable',
     'hard',
-    'https://cdn.pixabay.com/photo/2014/08/07/21/07/souffle-412785_1280.jpg',
+    souffle,
     45,
     [
       '1 Teaspoon melted Butter',
@@ -311,7 +323,7 @@ export const MEALS = [
     'Asparagus Salad with Cherry Tomatoes',
     'luxurious',
     'simple',
-    'https://cdn.pixabay.com/photo/2018/04/09/18/26/asparagus-3304997_1280.jpg',
+    asparegus,
     30,
     [
       'White and Green Asparagus',
