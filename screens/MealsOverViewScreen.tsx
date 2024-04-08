@@ -21,13 +21,18 @@ function MealsOverViewScreen({ route, navigation }) {
     },[CatId,navigation])
     
     function renderMealItem(itemData) {
+        const item=itemData.item
+
+        const mealItemProps={
+            id:item.id,
+            title:item.title,
+            imageUrl:item.imageUrl,
+            duration:item.duration,
+            complexity:item.complexity,
+            affordability:item.affordability
+        }
         return (
-            <MealItem
-                title={itemData.item.title}
-                imageUrl={itemData.item.imageUrl} 
-                duration={itemData.item.duration} 
-                complexity={itemData.item.complexity} 
-                affordability={itemData.item.affordability} />
+            <MealItem {...mealItemProps} />
 
         )
 
