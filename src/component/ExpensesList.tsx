@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Text, View, FlatList } from 'react-native'
+import ExpeneItem from './ExpeneItem'
 
 function ExpensesList({expenses}) {
 
   function renderExpeneItem(itemData) {
 
     return (
-      <Text>{itemData.item.description}</Text>
+      <ExpeneItem {...itemData.item}/>
       )
   }
 

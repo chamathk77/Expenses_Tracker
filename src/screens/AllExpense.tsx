@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View } from 'react-native'
-import ExpensesOut from './component/ExpensesOutput'
+import ExpensesOut from '../component/ExpensesOutput'
 
 function AllExpense () {
  

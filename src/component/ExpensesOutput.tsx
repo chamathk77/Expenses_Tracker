@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import ExpensesSummary from './ExpensesSummary'
 import ExpensesList from './ExpensesList'
+import { GlobalStyles } from '../../constant/styles'
 function ExpensesOut({ expenses, expensesPeriod }) {
 
     const Dummy_Expenses = [
@@ -26,14 +27,38 @@ function ExpensesOut({ expenses, expensesPeriod }) {
         },{
             id: 'e4',
             description: 'A book',
-            amount: 14.99,
+            amount: 24.99,
+            date: new Date('2022-12-15'),
+        },
+        {
+            id: 'e5',
+            description: 'A pair of shoes',
+            amount: 59.99,
+            date: new Date('2022-12-12'),
+        },
+        {
+            id: 'e6',
+            description: 'A pair of trousers',
+            amount: 89.29,
+            date: new Date('2022-12-13'),
+        },
+        {
+            id: 'e7',
+            description: 'Some bananas',
+            amount: 5.99,
+            date: new Date('2022-12-14'),
+        },
+        {
+            id: 'e8',
+            description: 'A book',
+            amount: 24.99,
             date: new Date('2022-12-15'),
         }
     ]
         
 
     return (
-        <View>
+        <View style={styles.container}>
             <ExpensesSummary
                 expenses={Dummy_Expenses}
                 periodName={expensesPeriod} />
@@ -45,3 +70,12 @@ function ExpensesOut({ expenses, expensesPeriod }) {
 }
 
 export default ExpensesOut
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 24,
+        paddingTop: 24,
+        paddingBottom: 0,
+        backgroundColor: GlobalStyles.colors.primary700,
+    },
+})
