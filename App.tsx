@@ -9,6 +9,7 @@ import ManageExpense from './src/screens/ManageExpense'
 import RecentExpense from './src/screens/RecentExpense'
 import { GlobalStyles } from './constant/styles'
 import { SvgUri } from 'react-native-svg'
+import IconButton from './src/component/UI/iconBUtton'
 
 
 
@@ -18,41 +19,51 @@ const BottomTab = createBottomTabNavigator()
 
 function ExpensesOverview() {
   return (
-    <BottomTab.Navigator 
-    screenOptions={{
-      headerStyle: {backgroundColor:GlobalStyles.colors.primary500
+    <BottomTab.Navigator
+      screenOptions={({ navigation }) => ({
+        headerStyle: {
+          backgroundColor: GlobalStyles.colors.primary500
 
-    },
-    headerTintColor:'white',
-    tabBarStyle:{backgroundColor:GlobalStyles.colors.primary500
+        },
+        headerTintColor: 'white',
+        tabBarStyle: {
+          backgroundColor: GlobalStyles.colors.primary500
 
-    },
-    tabBarActiveTintColor:GlobalStyles.colors.accent500
-    
+        },
+        tabBarActiveTintColor: GlobalStyles.colors.accent500,
+        headerRight: () => (
+          <IconButton
+            onPress={() => {
+              navigation.navigate('ManageExpense');
 
-    }}>
-      <BottomTab.Screen 
-      name="RecentExpense" 
-      component={RecentExpense}
-      options={{
-        title:'Recent Expense',
-        tabBarLabel:'Recent',
-        tabBarIcon:({color,size})=>{
-          return <Image source={require('./assets/images/hourglass.png')} style={{width:size,height:size,tintColor:color}} />
-          
-        }
-      }} 
+            }}
+          />
+        )
+
+
+      })}>
+      <BottomTab.Screen
+        name="RecentExpense"
+        component={RecentExpense}
+        options={{
+          title: 'Recent Expense',
+          tabBarLabel: 'Recent',
+          tabBarIcon: ({ color, size }) => {
+            return <Image source={require('./assets/images/hourglass.png')} style={{ width: size, height: size, tintColor: color }} />
+
+          }
+        }}
       />
-      <BottomTab.Screen 
-      name='AllExpense' 
-      component={AllExpense}
-      options={{
-        title:'All Expense',
-        tabBarLabel:'All',
-        tabBarIcon:({color,size})=>{
-          return <Image source={require('./assets/images/calendar.png')} style={{width:size,height:size,tintColor:color}} />
-        }
-      }}
+      <BottomTab.Screen
+        name='AllExpense'
+        component={AllExpense}
+        options={{
+          title: 'All Expense',
+          tabBarLabel: 'All',
+          tabBarIcon: ({ color, size }) => {
+            return <Image source={require('./assets/images/calendar.png')} style={{ width: size, height: size, tintColor: color }} />
+          }
+        }}
       />
     </BottomTab.Navigator>
   )
@@ -64,14 +75,25 @@ function App() {
     <>
       <NavigationContainer>
 
-        <stack.Navigator>
+        <stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: GlobalStyles.colors.primary500
+            },
+            headerTintColor: 'white',
+            
+
+          }}
+        >
           <stack.Screen
             name='ExpensesOverview'
             component={ExpensesOverview}
             options={{ headerShown: false }}
           />
 
-          <stack.Screen name='ManageExpense' component={ManageExpense} />
+          <stack.Screen name='ManageExpense' component={ManageExpense} options={{
+            presentation:"card"
+          }}/>
 
 
         </stack.Navigator>
