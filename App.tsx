@@ -11,6 +11,8 @@ import { GlobalStyles } from './constant/styles'
 import { SvgUri } from 'react-native-svg'
 import IconButton from './src/component/UI/iconBUtton'
 import ExpensesContextProvider from './src/store/expenes-context'
+import { Provider } from 'react-redux'
+import { store } from './src/store/store'
 
 
 const stack = createNativeStackNavigator()
@@ -74,7 +76,8 @@ function App() {
   return (
 
     <>
-    <ExpensesContextProvider>
+    <Provider store={store}>
+    {/* <ExpensesContextProvider> */}
     
       <NavigationContainer>
 
@@ -105,7 +108,8 @@ function App() {
 
       </NavigationContainer>
 
-      </ExpensesContextProvider>
+      {/* </ExpensesContextProvider> */}
+      </Provider>
 
     </>
 

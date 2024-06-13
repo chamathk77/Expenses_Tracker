@@ -3,24 +3,31 @@ import { Alert, StyleSheet, Text, View } from 'react-native'
 import DeleteIcon from '../component/UI/DeleteIcon'
 import { GlobalStyles } from '../../constant/styles'
 import Button from '../component/UI/Button'
-import { ExpensesContext } from '../store/expenes-context'
+// import { ExpensesContext } from '../store/expenes-context'
+import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
+import { useDispatch } from 'react-redux'
 
 function ManageExpense({ navigation, route }: any) {
+  const dispatch = useDispatch();
 
-  const expensesCtx = useContext(ExpensesContext)
+  // const expensesCtx = useContext(ExpensesContext)
 
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
 
   useLayoutEffect(() => {
+
     navigation.setOptions({ title: idEditing ? "Edit expense" : "Add expenses" })
   }, [navigation])
 
 
   function deleteExpense() {
-    expensesCtx.deleteExpense(editedExpense)
+    dispatch(deleteExpenses(editedExpense));
+    
+    
+
     Alert.alert('Delete Expense', `${editedExpense} id expenses Deleted`, [
-      { text: 'Cancel', style: 'cancel' },
+      { text: 'okey', style:'default' },
     ])
 
     navigation.goBack()
@@ -36,22 +43,38 @@ function ManageExpense({ navigation, route }: any) {
   function confirmHandler() {
 
     if (idEditing) {
-      expensesCtx.updateExpense(
-        editedExpense,
-        {
-          description: "test-Updatedddd",
-          amount: 19.99,
-          date: new Date('2024-06-10')
-        })
+      dispatch(updateExpenses({
+        id: editedExpense,
+        data: { description: "test-Updatedddd****",  date: new Date('2024-06-10') }
+      }));
+      // expensesCtx.updateExpense(
+      //   editedExpense,
+      //   {
+      //     description: "test-Updatedddd",
+      //     amount: 19.99,
+      //     date: new Date('2024-06-10')
+      //   })
 
     } else {
+      console.log('ADD');
 
-      expensesCtx.addExpense
-        ({
-          description: "test-ADD",
-          amount: 19.99,
-          date: new Date('2024-06-10')
-        })
+      dispatch(addExpenses({
+        description: "test-ADD***********",
+        amount: 19.99,
+        date: new Date('2024-06-10')
+        
+      }));
+
+      // expensesCtx.addExpense
+      //   ({
+      //     description: "test-ADD",
+      //     amount: 19.99,
+      //     date: new Date('2024-06-10')
+      //   })
+
+      Alert.alert('New Expensed added', '', [
+        { text: 'okey', style:'default' },
+      ])
 
     }
 
@@ -116,3 +139,5 @@ const styles = StyleSheet.create({
   }
 
 })
+
+
