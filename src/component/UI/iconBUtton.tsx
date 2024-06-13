@@ -1,7 +1,7 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native"
 
 
-function IconButton({onPress}) {
+function IconButton({onPress}:any) {
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.buttonContainer}>

@@ -1,10 +1,13 @@
-import React, { Component, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { Component, useContext, useLayoutEffect } from 'react'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import DeleteIcon from '../component/UI/DeleteIcon'
 import { GlobalStyles } from '../../constant/styles'
 import Button from '../component/UI/Button'
+import { ExpensesContext } from '../store/expenes-context'
 
-function ManageExpense({ navigation, route }) {
+function ManageExpense({ navigation, route }: any) {
+
+  const expensesCtx = useContext(ExpensesContext)
 
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
@@ -15,8 +18,13 @@ function ManageExpense({ navigation, route }) {
 
 
   function deleteExpense() {
+    expensesCtx.deleteExpense(editedExpense)
+    Alert.alert('Delete Expense', `${editedExpense} id expenses Deleted`, [
+      { text: 'Cancel', style: 'cancel' },
+    ])
 
     navigation.goBack()
+
 
   }
 
@@ -26,6 +34,28 @@ function ManageExpense({ navigation, route }) {
   }
 
   function confirmHandler() {
+
+    if (idEditing) {
+      expensesCtx.updateExpense(
+        editedExpense,
+        {
+          description: "test-Updatedddd",
+          amount: 19.99,
+          date: new Date('2024-06-10')
+        })
+
+    } else {
+
+      expensesCtx.addExpense
+        ({
+          description: "test-ADD",
+          amount: 19.99,
+          date: new Date('2024-06-10')
+        })
+
+    }
+
+
     navigation.goBack()
 
   }
@@ -75,14 +105,14 @@ const styles = StyleSheet.create({
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: 'center',
   },
-  buttons:{
+  buttons: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button:{
+  button: {
     minWidth: 120,
     marginHorizontal: 8
   }
-  
+
 })
