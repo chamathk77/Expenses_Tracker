@@ -6,6 +6,7 @@ import Button from '../component/UI/Button'
 // import { ExpensesContext } from '../store/expenes-context'
 import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
 import { useDispatch } from 'react-redux'
+import ExpenseForm from '../component/ManageExpense/ExpenseForm'
 
 function ManageExpense({ navigation, route }: any) {
   const dispatch = useDispatch();
@@ -89,6 +90,8 @@ function ManageExpense({ navigation, route }: any) {
 
   return (
     <View style={styles.container}>
+      <ExpenseForm />
+
 
       <View style={styles.buttons}>
         <Button
@@ -132,10 +135,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10
   },
   button: {
     minWidth: 120,
     marginHorizontal: 8
+    
   }
 
 })
