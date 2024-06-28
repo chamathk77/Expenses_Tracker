@@ -1,10 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Input from './Input'
+import Button from '../UI/Button'
 
-function ExpenseForm() {
-  function AmountChangeHandler() {
+function ExpenseForm({ onCancel, onSubmit, SubmitButtonLabel }: any) {
+  const [InputValues, setInputValue] = useState({
+    amount: '',
+    date: '',
+    description: ''
+  })
+  function InputChangedHandler(InputIdentifier: any, enteredAmount: any) {
+    setInputValue((CurrentInputValues: any) => {
+      return {
+        ...CurrentInputValues,
+        [InputIdentifier]: enteredAmount
+      }
+    })
+  }
 
+  function SubmitHandler() {
+    const expenseData = {
+      amount: +InputValues.amount,
+      date:new Date( InputValues.date),
+      description: InputValues.description
+    }
+
+    onSubmit(expenseData)
   }
 
   return (
@@ -14,11 +35,15 @@ function ExpenseForm() {
 
         <Input
           label="Amount"
-          textInputConfig={{
-            keyboardType: 'decimal-pad'
-          }}
-          onChangeText={AmountChangeHandler}
           styles={styles.rowInput}
+          textInputConfig={{
+            keyboardType: 'decimal-pad',
+            onChangeText: InputChangedHandler.bind(this, 'amount'),
+            value: InputValues.amount
+
+
+          }}
+
         />
 
         <Input
@@ -26,7 +51,9 @@ function ExpenseForm() {
           textInputConfig={{
             keyboardType: 'default',
             placeholder: 'YYYY-MM-DD',
-            maxLength: 10
+            maxLength: 10,
+            onChangeText: InputChangedHandler.bind(this, 'date'),
+            value: InputValues.date
             // onChangeText:{}
 
           }}
@@ -42,6 +69,8 @@ function ExpenseForm() {
           keyboardType: 'default',
           multiline: true,
           autoCapitalize: 'sentences',
+          onChangeText: InputChangedHandler.bind(this, 'description'),
+          value: InputValues.description
           // numberOfLines: 3,
           // autocorrect: false
           // onChangeText:{}
@@ -49,6 +78,20 @@ function ExpenseForm() {
 
         }} />
 
+      <View style={styles.buttons}>
+        <Button
+          onPress={onCancel}
+          mode="flat"
+          Style={styles.button}>Cancel</Button>
+
+        <Button
+          onPress={SubmitHandler}
+          Style={styles.button}
+          mode={undefined}>
+          {SubmitButtonLabel}
+
+        </Button>
+      </View>
 
 
     </View>
@@ -73,6 +116,17 @@ const styles = StyleSheet.create({
   },
   rowInput: {
     flex: 1
+
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
+  },
+  button: {
+    minWidth: 120,
+    marginHorizontal: 8
 
   }
 })

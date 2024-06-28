@@ -24,11 +24,11 @@ function ManageExpense({ navigation, route }: any) {
 
   function deleteExpense() {
     dispatch(deleteExpenses(editedExpense));
-    
-    
+
+
 
     Alert.alert('Delete Expense', `${editedExpense} id expenses Deleted`, [
-      { text: 'okey', style:'default' },
+      { text: 'okey', style: 'default' },
     ])
 
     navigation.goBack()
@@ -41,12 +41,16 @@ function ManageExpense({ navigation, route }: any) {
 
   }
 
-  function confirmHandler() {
+  function confirmHandler(expenseData: any) {
 
     if (idEditing) {
       dispatch(updateExpenses({
         id: editedExpense,
-        data: { description: "test-Updatedddd****",  date: new Date('2024-06-10') }
+        data: {
+          description: expenseData.description,
+          date: expenseData.date,
+          amount:expenseData.amount
+        }
       }));
       // expensesCtx.updateExpense(
       //   editedExpense,
@@ -60,10 +64,10 @@ function ManageExpense({ navigation, route }: any) {
       console.log('ADD');
 
       dispatch(addExpenses({
-        description: "test-ADD***********",
-        amount: 19.99,
-        date: new Date('2024-06-10')
-        
+        description: expenseData.description,
+        amount: expenseData.amount,
+        date: expenseData.date
+
       }));
 
       // expensesCtx.addExpense
@@ -74,7 +78,7 @@ function ManageExpense({ navigation, route }: any) {
       //   })
 
       Alert.alert('New Expensed added', '', [
-        { text: 'okey', style:'default' },
+        { text: 'okey', style: 'default' },
       ])
 
     }
@@ -90,20 +94,15 @@ function ManageExpense({ navigation, route }: any) {
 
   return (
     <View style={styles.container}>
-      <ExpenseForm />
+      <ExpenseForm
+        onCancel={cancelHandler}
+        onSubmit={confirmHandler}
+        SubmitButtonLabel={idEditing ? "Update" : "Add"}
+      />
 
 
-      <View style={styles.buttons}>
-        <Button
-          onPress={cancelHandler}
-          mode="flat"
-          Style={styles.button}>Cancel</Button>
 
-        <Button
-          onPress={confirmHandler}
-          Style={styles.button}
-          mode={undefined}>{idEditing ? "Update" : "Confirm"}</Button>
-      </View>
+
       {idEditing && (
 
         <View style={styles.deleteContainer}>
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
   button: {
     minWidth: 120,
     marginHorizontal: 8
-    
+
   }
 
 })
