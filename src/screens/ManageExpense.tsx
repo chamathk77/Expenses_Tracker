@@ -5,7 +5,7 @@ import { GlobalStyles } from '../../constant/styles'
 import Button from '../component/UI/Button'
 // import { ExpensesContext } from '../store/expenes-context'
 import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ExpenseForm from '../component/ManageExpense/ExpenseForm'
 
 function ManageExpense({ navigation, route }: any) {
@@ -15,6 +15,14 @@ function ManageExpense({ navigation, route }: any) {
 
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
+
+  const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
+  console.log("list ---------------------->",expensesList);
+
+  const selectedExpense= expensesList.find((expense: any) => expense.id === editedExpense)
+  console.log("selectedExpense ---------------------->",selectedExpense);
+
+
 
   useLayoutEffect(() => {
 
@@ -98,6 +106,7 @@ function ManageExpense({ navigation, route }: any) {
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
         SubmitButtonLabel={idEditing ? "Update" : "Add"}
+        defaultValue={selectedExpense}
       />
 
 
