@@ -130,7 +130,6 @@ function ExpenseForm(this: any, { onCancel, onSubmit, SubmitButtonLabel, default
         }} />
 
       {formIsValid ? <Text  style={{textAlign:'center',color:GlobalStyles.colors.error500,marginTop:10,}}>Invalid Input Values - Please check your entered data</Text> : null}
-
       <View style={styles.buttons}>
         <Button
           onPress={onCancel}

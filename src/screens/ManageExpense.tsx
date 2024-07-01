@@ -7,6 +7,7 @@ import Button from '../component/UI/Button'
 import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
 import { useDispatch, useSelector } from 'react-redux'
 import ExpenseForm from '../component/ManageExpense/ExpenseForm'
+import { storeExpense } from '../../util/http'
 
 function ManageExpense({ navigation, route }: any) {
   const dispatch = useDispatch();
@@ -70,6 +71,7 @@ function ManageExpense({ navigation, route }: any) {
 
     } else {
       console.log('ADD');
+      storeExpense(expenseData)
 
       dispatch(addExpenses({
         description: expenseData.description,
