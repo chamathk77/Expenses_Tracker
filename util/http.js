@@ -8,10 +8,10 @@ export function storeExpense(expenseData) {
 }
 
 export async function fetchExpenses() {
-    console.log("fetchExpenses")
+    console.log("fetchExpenses enterd")
     const response = await axios.get(BASE_URL + '/expenses.json')
 
-    console.log("response",response.data)
+    console.log("response--------------------->",response.data)
 
     const expenses = [];
 

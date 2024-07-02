@@ -22,6 +22,7 @@ const BottomTab = createBottomTabNavigator()
 function ExpensesOverview() {
   return (
     <BottomTab.Navigator
+    initialRouteName='AllExpense'
       screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: GlobalStyles.colors.primary500

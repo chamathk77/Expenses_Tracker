@@ -82,9 +82,13 @@ export const kycSlice = createSlice({
 
     },
     reducers: {
+        setExpenses: (state, action) => {
+            console.log('setExpenses Reducer  -test---------->>>>>>>>>', action.payload);
+            state.Expenses.ExpensesList = action.payload;
+        },
         deleteExpenses: (state, action) => {
             const idToDelete = action.payload;
-            console.log('deleteExpenses', idToDelete);
+            console.log('deleteExpenses ', idToDelete);
             
             state.Expenses.ExpensesList = state.Expenses.ExpensesList.filter(expense => expense.id !== idToDelete);
           },
@@ -116,7 +120,7 @@ export const kycSlice = createSlice({
 
 });
 
-export const { deleteExpenses, updateExpenses, addExpenses } = kycSlice.actions;
+export const { deleteExpenses, updateExpenses, addExpenses,setExpenses } = kycSlice.actions;
 
 
 

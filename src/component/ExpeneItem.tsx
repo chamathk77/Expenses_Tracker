@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
 import { Pressable, StyleSheet, Text, TextBase, TouchableOpacity, View } from 'react-native'
 import { GlobalStyles } from '../../constant/styles'
-import { getFormattedDate } from '../../util/date'
+// import { getFormattedDate } from '../../util/date'
 import { useNavigation } from '@react-navigation/native'
 
 function ExpenesItem({ id,description, amount, date }: any) {
     const navigation = useNavigation();
+
+
+    const parsedDate = new Date(date);
+    const formattedDate = `${parsedDate.getDate()}-${parsedDate.getMonth() + 1}-${parsedDate.getFullYear()}`;
+
     function expensePressHandler() {
         navigation.navigate('ManageExpense', { expenseId: id })
 
         
     }
+
+    
 
 
     return (
@@ -19,7 +26,7 @@ function ExpenesItem({ id,description, amount, date }: any) {
             <View style={styles.expenseItem}>
                 <View>
                     <Text style={[styles.textBase, styles.description]}>{description}</Text>
-                    <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+                    <Text style={styles.textBase}>{formattedDate}</Text>
                 </View>
 
 

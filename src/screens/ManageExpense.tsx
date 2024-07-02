@@ -40,13 +40,13 @@ function ManageExpense({ navigation, route }: any) {
       { text: 'okey', style: 'default' },
     ])
 
-    navigation.goBack()
+    navigation.navigate('RecentExpense')
 
 
   }
 
   function cancelHandler() {
-    navigation.goBack()
+    navigation.navigate('RecentExpense')
 
   }
 
@@ -94,7 +94,7 @@ function ManageExpense({ navigation, route }: any) {
     }
 
 
-    navigation.goBack()
+    navigation.navigate('RecentExpense')
 
   }
 
