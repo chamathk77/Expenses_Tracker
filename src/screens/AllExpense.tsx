@@ -7,6 +7,8 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { fetchExpenses } from '../../util/http';
 import { setExpenses } from '../store/Reducers';
 import { GlobalStyles } from '../../constant/styles';
+import { useFocusEffect } from '@react-navigation/native';
+import React from 'react';
 
 function AllExpenses() {
 
@@ -17,17 +19,28 @@ function AllExpenses() {
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   console.log(expensesList);
 
-  useEffect(() => {
-    async function getExpenses() {
-      const expensesList = await fetchExpenses()
-      console.log("expensesList ALL Expenses--------------------->", expensesList);
-      setfetchdata(expensesList)
-      dispatch(setExpenses(expensesList))
-      console.log("setExpensesList  from db------------------->", expensesList)
-    }
-    getExpenses()
 
-  }, [])
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("useFocusEffect called ------------------->All Expenses");
+
+      async function getExpenses() {
+        const expensesList = await fetchExpenses()
+        console.log("all expenses- ---- expensesList ALL Expenses--------------------->", expensesList);
+        setfetchdata(expensesList)
+        dispatch(setExpenses(expensesList))
+        console.log("all expenses- ----setExpensesList  from db------------------->", expensesList)
+      }
+      getExpenses()
+
+      
+      
+      
+      return () => {};
+    }, [])
+  );
+
+
 
 
   return (
