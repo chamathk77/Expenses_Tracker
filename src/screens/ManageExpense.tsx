@@ -7,7 +7,7 @@ import Button from '../component/UI/Button'
 import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
 import { useDispatch, useSelector } from 'react-redux'
 import ExpenseForm from '../component/ManageExpense/ExpenseForm'
-import { storeExpense } from '../../util/http'
+import { storeExpense, UpdateExpense,DeleteExpense } from '../../util/http'
 
 function ManageExpense({ navigation, route }: any) {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ function ManageExpense({ navigation, route }: any) {
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
 
+  console.log("idEditing Id ---------------------->",editedExpense);
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   console.log("list ---------------------->",expensesList);
 
@@ -31,8 +32,10 @@ function ManageExpense({ navigation, route }: any) {
   }, [navigation])
 
 
-  function deleteExpense() {
+  async function deleteExpense() {
+    await DeleteExpense(editedExpense)
     dispatch(deleteExpenses(editedExpense));
+    
 
 
 
@@ -40,7 +43,7 @@ function ManageExpense({ navigation, route }: any) {
       { text: 'okey', style: 'default' },
     ])
 
-    navigation.goback()
+    navigation.navigate('AllExpense')
 
 
   }
@@ -50,7 +53,7 @@ function ManageExpense({ navigation, route }: any) {
 
   }
 
-  function confirmHandler(expenseData: any) {
+  async function   confirmHandler(expenseData: any) {
 
     if (idEditing) {
       dispatch(updateExpenses({
@@ -68,12 +71,14 @@ function ManageExpense({ navigation, route }: any) {
       //     amount: 19.99,
       //     date: new Date('2024-06-10')
       //   })
+      await UpdateExpense(editedExpense,expenseData)
 
     } else {
       console.log('ADD');
-      storeExpense(expenseData)
+      const id =await storeExpense(expenseData)
 
       dispatch(addExpenses({
+        id: id,
         description: expenseData.description,
         amount: expenseData.amount,
         date: expenseData.date

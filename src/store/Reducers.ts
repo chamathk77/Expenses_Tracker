@@ -66,4 +66,4 @@ export const { deleteExpenses, updateExpenses, addExpenses,setExpenses } = kycSl
 
 
 
-export default kycSlice.reducer;
+export default kycSlice.reducer;0

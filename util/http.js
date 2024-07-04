@@ -2,16 +2,19 @@ import axios from "axios";
 
 const BASE_URL = 'https://expensestracker-2b1ef-default-rtdb.asia-southeast1.firebasedatabase.app/'
 
-export function storeExpense(expenseData) {
-    axios.post(BASE_URL + 'expenses.json',
-        expenseData)
+export async function storeExpense(expenseData) {
+    const response = await axios.post(BASE_URL + 'expenses.json', expenseData)
+    const id = response.data.name
+    console.log("Store Expenses ID-------------------------->", response.data.name)
+
+    return id
 }
 
 export async function fetchExpenses() {
     console.log("fetchExpenses enterd")
     const response = await axios.get(BASE_URL + '/expenses.json')
 
-    console.log("response--------------------->",response.data)
+    console.log("response--------------------->", response.data)
 
     const expenses = [];
 
@@ -28,4 +31,16 @@ export async function fetchExpenses() {
     }
     console.log(expenses)
     return expenses
+}
+
+
+export async function UpdateExpense(id, expenseData) {
+    const response = await axios.put(BASE_URL + `/expenses/${id}.json`, expenseData)
+
+}
+
+
+export async function DeleteExpense(id) {
+   const response = await axios.delete(BASE_URL + `/expenses/${id}.json`)
+
 }

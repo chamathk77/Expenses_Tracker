@@ -15,10 +15,11 @@ function AllExpenses() {
   const dispatch = useDispatch();
   // const expensesCtx = useContext(ExpensesContext);
 
-  const [fetchdata, setfetchdata] = useState<any>([])
+ 
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   console.log(expensesList);
 
+  const [fetchdata, setfetchdata] = useState<any>(expensesList)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -47,7 +48,7 @@ function AllExpenses() {
 
 
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
-      <ExpensesOutput expenses={expensesList} expensesPeriod="Total" />
+      <ExpensesOutput expenses={fetchdata} expensesPeriod="Total" />
 
 
 
