@@ -10,34 +10,40 @@ import { setExpenses } from '../store/Reducers';
 import { GlobalStyles } from '../../constant/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
+import LoadingOverView from '../component/UI/LoadingOverView';
 
 function RecentExpenses({ navigation }: any) {
   const dispatch = useDispatch();
 
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   const [fetchExpensesList, setFetchExpensesList] = useState<any>([expensesList])
-
+const [isfecthing, setIsfetching] = useState<boolean>(true)
 
   useFocusEffect(
     React.useCallback(() => {
 
       async function getExpenses() {
+        setIsfetching(true)
         const expensesList = await fetchExpenses()
+      
         console.log(" recent expenses ---expensesList------------->>>>>>>>>>>>", expensesList);
         // setFetchExpensesList(expensesList)
         dispatch(setExpenses(expensesList))
-        console.log("recent expenses ---setFetchExpensesList  from db------------------->", expensesList)
+        console.log("recent expenses ---setFetchExpensesList  from db-------------------> ", expensesList)
 
         // -----------------GET DATE FILTER-----------------------------
 
         async function fetchExpensesDate() {
+         
 
           const recentExpenses = expensesList.filter((expense: any) => {
+            setIsfetching(false)
             const today = new Date();
             const date7DaysAgo = getDateMinusDays(today, 7);
             console.log("date7DaysAgo", date7DaysAgo);
 
-            return (expense.date >= date7DaysAgo) && (expense.date <= today);
+            return (expense.date >= date7DaysAgo) && (expense.date <= today); 
+
           });
 
           setFetchExpensesList(recentExpenses)
@@ -60,6 +66,10 @@ function RecentExpenses({ navigation }: any) {
      
     }, [navigation])
   );
+
+  if(isfecthing){
+    return <LoadingOverView/>
+  }
 
 
 

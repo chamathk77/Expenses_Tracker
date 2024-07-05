@@ -1,4 +1,4 @@
-import React, { Component, useContext, useLayoutEffect } from 'react'
+import React, { Component, useContext, useLayoutEffect, useState } from 'react'
 import { Alert, StyleSheet, Text, View } from 'react-native'
 import DeleteIcon from '../component/UI/DeleteIcon'
 import { GlobalStyles } from '../../constant/styles'
@@ -8,6 +8,7 @@ import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
 import { useDispatch, useSelector } from 'react-redux'
 import ExpenseForm from '../component/ManageExpense/ExpenseForm'
 import { storeExpense, UpdateExpense,DeleteExpense } from '../../util/http'
+import LoadingOverView from '../component/UI/LoadingOverView'
 
 function ManageExpense({ navigation, route }: any) {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ function ManageExpense({ navigation, route }: any) {
 
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
+
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   console.log("idEditing Id ---------------------->",editedExpense);
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
@@ -33,7 +36,9 @@ function ManageExpense({ navigation, route }: any) {
 
 
   async function deleteExpense() {
+    setIsSubmitting(true)
     await DeleteExpense(editedExpense)
+    setIsSubmitting(false)
     dispatch(deleteExpenses(editedExpense));
     
 
@@ -54,6 +59,7 @@ function ManageExpense({ navigation, route }: any) {
   }
 
   async function   confirmHandler(expenseData: any) {
+    setIsSubmitting(true)
 
     if (idEditing) {
       dispatch(updateExpenses({
@@ -91,6 +97,7 @@ function ManageExpense({ navigation, route }: any) {
       //     amount: 19.99,
       //     date: new Date('2024-06-10')
       //   })
+      setIsSubmitting(false)
 
       Alert.alert('New Expensed added', '', [
         { text: 'okey', style: 'default' },
@@ -106,6 +113,9 @@ function ManageExpense({ navigation, route }: any) {
 
 
 
+  if (isSubmitting) {
+    return <LoadingOverView />
+  }
 
   return (
     <View style={styles.container}>

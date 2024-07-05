@@ -9,15 +9,18 @@ import { setExpenses } from '../store/Reducers';
 import { GlobalStyles } from '../../constant/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
+import LoadingOverView from '../component/UI/LoadingOverView';
 
 function AllExpenses() {
 
   const dispatch = useDispatch();
   // const expensesCtx = useContext(ExpensesContext);
 
- 
+
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   console.log(expensesList);
+
+  const [isfecthing, setIsfetching] = useState<boolean>(true)
 
   const [fetchdata, setfetchdata] = useState<any>(expensesList)
 
@@ -26,20 +29,29 @@ function AllExpenses() {
       console.log("useFocusEffect called ------------------->All Expenses");
 
       async function getExpenses() {
+        setIsfetching(true)
         const expensesList = await fetchExpenses()
         console.log("all expenses- ---- expensesList ALL Expenses--------------------->", expensesList);
         setfetchdata(expensesList)
         dispatch(setExpenses(expensesList))
         console.log("all expenses- ----setExpensesList  from db------------------->", expensesList)
+        setIsfetching(false)
       }
       getExpenses()
 
-      
-      
-      
-      return () => {};
+
+
+
+      return () => { };
     }, [])
   );
+
+
+
+  if (isfecthing) {
+    return <LoadingOverView />
+  }
+
 
 
 
