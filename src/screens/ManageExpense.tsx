@@ -7,25 +7,28 @@ import Button from '../component/UI/Button'
 import { addExpenses, deleteExpenses, updateExpenses } from '../store/Reducers'
 import { useDispatch, useSelector } from 'react-redux'
 import ExpenseForm from '../component/ManageExpense/ExpenseForm'
-import { storeExpense, UpdateExpense,DeleteExpense } from '../../util/http'
+import { storeExpense, UpdateExpense, DeleteExpense } from '../../util/http'
 import LoadingOverView from '../component/UI/LoadingOverView'
+import ErrorOverlay from '../component/UI/ErrorOverlay'
 
 function ManageExpense({ navigation, route }: any) {
   const dispatch = useDispatch();
 
-  // const expensesCtx = useContext(ExpensesContext)
+
+  //check when manage expense clicked with id as params or not
 
   const editedExpense = route.params?.expenseId
   const idEditing = !!editedExpense
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  console.log("idEditing Id ---------------------->",editedExpense);
+  console.log("idEditing Id ---------------------->", editedExpense);
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
-  console.log("list ---------------------->",expensesList);
+  console.log("list ---------------------->", expensesList);
 
-  const selectedExpense= expensesList.find((expense: any) => expense.id === editedExpense)
-  console.log("selectedExpense ---------------------->",selectedExpense);
+  const selectedExpense = expensesList.find((expense: any) => expense.id === editedExpense)
+  console.log("selectedExpense ---------------------->", selectedExpense);
 
 
 
@@ -34,21 +37,31 @@ function ManageExpense({ navigation, route }: any) {
     navigation.setOptions({ title: idEditing ? "Edit expense" : "Add expenses" })
   }, [navigation])
 
-
+  //delete expense 
   async function deleteExpense() {
+
     setIsSubmitting(true)
-    await DeleteExpense(editedExpense)
-    setIsSubmitting(false)
-    dispatch(deleteExpenses(editedExpense));
-    
+
+    try {
+
+      await DeleteExpense(editedExpense)
+
+      dispatch(deleteExpenses(editedExpense));
+
+      Alert.alert('Deleted Expenses.\n', `id number : ${editedExpense} `, [
+        { text: 'okey', style: 'default' },
+      ])
+      setTimeout(() => {
+
+        navigation.navigate('AllExpense')
+      }, 1000);
 
 
+    } catch (error) {
+      setError('could not delete expenses - please try again later !')
+      setIsSubmitting(false)
 
-    Alert.alert('Delete Expense', `${editedExpense} id expenses Deleted`, [
-      { text: 'okey', style: 'default' },
-    ])
-
-    navigation.navigate('AllExpense')
+    }
 
 
   }
@@ -58,61 +71,83 @@ function ManageExpense({ navigation, route }: any) {
 
   }
 
-  async function   confirmHandler(expenseData: any) {
+  //edite and update expense
+
+  async function confirmHandler(expenseData: any) {
     setIsSubmitting(true)
 
-    if (idEditing) {
-      dispatch(updateExpenses({
-        id: editedExpense,
-        data: {
+    try {
+
+      if (idEditing) {
+        dispatch(updateExpenses({
+          id: editedExpense,
+          data: {
+            description: expenseData.description,
+            date: expenseData.date,
+            amount: expenseData.amount
+          }
+        }));
+        //api calling
+        await UpdateExpense(editedExpense, expenseData)
+
+        Alert.alert('Expense Updated Successfully.\nid number : ' + editedExpense, '', [
+          { text: 'okey', style: 'default' },
+        ])
+
+        navigation.navigate('AllExpense')
+
+
+      } else {
+        console.log('adding new expenses');
+        //api calling
+        const id = await storeExpense(expenseData)
+
+        dispatch(addExpenses({
+          id: id,
           description: expenseData.description,
-          date: expenseData.date,
-          amount:expenseData.amount
-        }
-      }));
-      // expensesCtx.updateExpense(
-      //   editedExpense,
-      //   {
-      //     description: "test-Updatedddd",
-      //     amount: 19.99,
-      //     date: new Date('2024-06-10')
-      //   })
-      await UpdateExpense(editedExpense,expenseData)
+          amount: expenseData.amount,
+          date: expenseData.date
 
-    } else {
-      console.log('ADD');
-      const id =await storeExpense(expenseData)
+        }));
 
-      dispatch(addExpenses({
-        id: id,
-        description: expenseData.description,
-        amount: expenseData.amount,
-        date: expenseData.date
 
-      }));
 
-      // expensesCtx.addExpense
-      //   ({
-      //     description: "test-ADD",
-      //     amount: 19.99,
-      //     date: new Date('2024-06-10')
-      //   })
+
+        Alert.alert('New Expensed added', '', [
+          { text: 'okey', style: 'default' },
+        ])
+
+        navigation.navigate('AllExpense')
+
+      }
+
+    } catch (error) {
+
+      setError('could not save expenses - please try again later !')
       setIsSubmitting(false)
-
-      Alert.alert('New Expensed added', '', [
-        { text: 'okey', style: 'default' },
-      ])
 
     }
 
 
-    navigation.navigate('AllExpense')
 
+
+
+
+  }
+
+  // handle error button press
+  function errorHandler() {
+    setError(null)
+  }
+
+
+  if (error && !isSubmitting) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />
   }
 
 
 
-
+  //loading screen while submitting
   if (isSubmitting) {
     return <LoadingOverView />
   }
@@ -128,6 +163,7 @@ function ManageExpense({ navigation, route }: any) {
 
 
 
+      {/* delet button appear only editing  */}
 
       {idEditing && (
 

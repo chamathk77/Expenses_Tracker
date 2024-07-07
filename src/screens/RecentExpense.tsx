@@ -11,107 +11,96 @@ import { GlobalStyles } from '../../constant/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import LoadingOverView from '../component/UI/LoadingOverView';
+import ErrorOverlay from '../component/UI/ErrorOverlay';
 
 function RecentExpenses({ navigation }: any) {
   const dispatch = useDispatch();
 
-  const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
-  const [fetchExpensesList, setFetchExpensesList] = useState<any>([expensesList])
-const [isfecthing, setIsfetching] = useState<boolean>(true)
+  const [fetchExpensesList, setFetchExpensesList] = useState<any>([])
+  const [isfecthing, setIsfetching] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
+  let  expensesList:any=[]
 
   useFocusEffect(
+   
+
+    
     React.useCallback(() => {
+      
+      console.log("useFocusEffect called ------------------->Recent expenses");
 
       async function getExpenses() {
         setIsfetching(true)
-        const expensesList = await fetchExpenses()
-      
-        console.log(" recent expenses ---expensesList------------->>>>>>>>>>>>", expensesList);
-        // setFetchExpensesList(expensesList)
-        dispatch(setExpenses(expensesList))
-        console.log("recent expenses ---setFetchExpensesList  from db-------------------> ", expensesList)
+        try {
+
+          expensesList = await fetchExpenses()
+          console.log(" recent expenses ---expensesList Recent expenses---------rrr ------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", expensesList);
+
+          dispatch(setExpenses(expensesList))
+
+        } catch (error) {
+
+          setError('could not fetch expenses')
+        }
+
+        setIsfetching(false)
+
 
         // -----------------GET DATE FILTER-----------------------------
 
         async function fetchExpensesDate() {
-         
+
 
           const recentExpenses = expensesList.filter((expense: any) => {
-            setIsfetching(false)
+
             const today = new Date();
             const date7DaysAgo = getDateMinusDays(today, 7);
             console.log("date7DaysAgo", date7DaysAgo);
 
-            return (expense.date >= date7DaysAgo) && (expense.date <= today); 
+            return (expense.date >= date7DaysAgo) && (expense.date <= today);
 
           });
+
+          console.log("recentExpenses-------After filter------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", recentExpenses);
 
           setFetchExpensesList(recentExpenses)
         }
 
         fetchExpensesDate()
 
-
-
-
       }
-
-
-
       getExpenses()
 
 
-
-
-     
     }, [navigation])
   );
 
-  if(isfecthing){
-    return <LoadingOverView/>
+  //loading screen while fetching
+
+  if (isfecthing) {
+    return <LoadingOverView />
+  }
+
+  // handle error button press
+  function errorHandler() {
+    setError(null)
+  }
+
+
+  //errot screen
+  if (error !== null && !isfecthing) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />
   }
 
 
 
 
-  // console.log("recentExpenses", expensesList);
-  // setFetchExpensesList(expensesList)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // const expensesCtx = useContext(ExpensesContext);
-
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+
       <ExpensesOutput expenses={fetchExpensesList} expensesPeriod="Total" />
-
-      {/* <TouchableOpacity style={{
-        backgroundColor: GlobalStyles.colors.gray700,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        
-
-      }}
-      onPress={() => navigation.navigate('RecentExpense') }
-      >
-        <Text style={{ color: 'white', fontSize: 15 }}>Reload Expense</Text>
-
-      </TouchableOpacity> */}
-
 
     </View>
 

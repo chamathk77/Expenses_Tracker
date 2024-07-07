@@ -10,32 +10,39 @@ import { GlobalStyles } from '../../constant/styles';
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
 import LoadingOverView from '../component/UI/LoadingOverView';
+import ErrorOverlay from '../component/UI/ErrorOverlay';
 
 function AllExpenses() {
 
   const dispatch = useDispatch();
-  // const expensesCtx = useContext(ExpensesContext);
-
-
   const expensesList = useSelector((state: any) => state.ExpensesDetails.Expenses.ExpensesList)
   console.log(expensesList);
 
   const [isfecthing, setIsfetching] = useState<boolean>(true)
 
   const [fetchdata, setfetchdata] = useState<any>(expensesList)
+  const [error, setError] = useState<string | null>(null)
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("useFocusEffect called ------------------->All Expenses");
+      console.log("useFocusEffect called ------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>All Expenses");
 
       async function getExpenses() {
         setIsfetching(true)
-        const expensesList = await fetchExpenses()
-        console.log("all expenses- ---- expensesList ALL Expenses--------------------->", expensesList);
-        setfetchdata(expensesList)
-        dispatch(setExpenses(expensesList))
-        console.log("all expenses- ----setExpensesList  from db------------------->", expensesList)
+        try {
+
+          const expensesList = await fetchExpenses()
+          console.log("all expenses- ---- expensesList ALL Expenses--------------------->", expensesList);
+          setfetchdata(expensesList)
+          dispatch(setExpenses(expensesList))
+
+        } catch (error) {
+
+          setError('could not fetch expenses')
+
+        }
         setIsfetching(false)
+
       }
       getExpenses()
 
@@ -51,6 +58,18 @@ function AllExpenses() {
   if (isfecthing) {
     return <LoadingOverView />
   }
+
+  // handle error button press
+  function errorHandler() {
+    setError(null)
+  }
+
+
+  //errot screen
+  if (error !== null && !isfecthing) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />
+  }
+
 
 
 
